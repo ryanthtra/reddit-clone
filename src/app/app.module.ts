@@ -8,6 +8,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { ArticleComponent } from './article/article.component';
 import { ArticleListComponent } from './article-list/article-list.component';
 
+// A comment
 @NgModule({
   declarations: [
     AppComponent,
