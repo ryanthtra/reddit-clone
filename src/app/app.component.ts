@@ -21,6 +21,7 @@ export class SidebarComponent
   template: `
     <div>
       <h2>{{ article.title }}</h2>
+      <p>{{ article.description }}</p>
     </div>
   `
 })
