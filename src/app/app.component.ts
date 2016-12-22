@@ -3,6 +3,14 @@ import {
   Input 
 } from '@angular/core';
 
+export class Article {
+  // Shorthand form of both declaring properties for the class and initializing them for and instance.
+  constructor(
+    public title: string,
+    public description: string
+  ) {}
+}
+
 @Component({
   selector: 'app-sidebar',
   template: `
@@ -27,7 +35,7 @@ export class SidebarComponent
 })
 export class ArticleComponent
 {
-  @Input() article: Object;
+  @Input() article: Article;
 }
 
 @Component({
@@ -47,27 +55,27 @@ export class ArticleComponent
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  articles: Object[];
+  articles: Article[];
 
   constructor() 
   {
     this.articles = [
-      {
-        title: 'The Angular 2 Screenast',
-        description: 'The easiest way to learn Angular 2 is with Fullstack.io!'
-      },
-      {
-        title: 'Fullstack React',
-        description: 'Want to learn React too?'
-      },
-      {
-        title: 'Vue is new',
-        description: 'And pretty cool syntax too'
-      },
-      {
-        title: 'But what about elm?',
-        description: 'Everybody likes elm...right?'
-      }
+      new Article(
+        'The Angular 2 Screenast',
+        'The easiest way to learn Angular 2 is with Fullstack.io!'
+      ),
+      new Article(
+        'Fullstack React',
+        'Want to learn React too?'
+      ),
+      new Article(
+        'Vue is new',
+        'And pretty cool syntax too'
+      ),
+      new Article(
+        'But what about elm?',
+        'Everybody likes elm...right?'
+      )
     ];
   }
 }
