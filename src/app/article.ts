@@ -5,6 +5,7 @@ export class Article {
   constructor(
     public title: string,
     public description: string,
+    public imageUrl: string,
     public votes?: number
   ) {
     this.votes = votes || 0;
