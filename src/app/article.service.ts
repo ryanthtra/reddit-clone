@@ -29,13 +29,7 @@ export class ArticleService {
       })
       .then(function(articles) {
         const list = articles
-          .map(function(article) {
-            return new Article(
-              article.title,
-              article.description,
-              article.urlToImage
-            );
-          });
+          .map(article => Article.fromJSON(article));
         console.log('articles->', articles);
         return list;
       })
