@@ -11,10 +11,22 @@ import { environment } from '../environments/environment';
 export class ArticleService 
 {
   private _articles: BehaviorSubject<Article[]> = new BehaviorSubject<Article[]>([]);
+
+  private _sortByDirectionSubject: BehaviorSubject<number> = new BehaviorSubject<number>(1);
+  private _sortByFilterSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
+
   public articles: Observable<Article[]> = this._articles.asObservable();
+  public orderedArticles: Observable<Article[]>;
 
   constructor(private http: Http) { }
 
+  public sortBy(
+    filter: string,
+    direction: number
+  ): void
+  {
+
+  }
   public getArticles(): void 
   {
     // Make the http reuest -> Observable

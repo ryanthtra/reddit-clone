@@ -27,6 +27,18 @@ export class ArticleListHeaderComponent implements OnInit
   changeSort(filter: string) 
   {
     // update the filter
+    if (filter === this.currentFilter) {
+      this.changeDirection();      
+    }
+    else {
+      this.currentFilter = filter;
+      this._updateSort();
+    }
+  }
+
+  private _updateSort()
+  {
+    // call sortBy on the article service
   }
 
   ngOnInit() 
