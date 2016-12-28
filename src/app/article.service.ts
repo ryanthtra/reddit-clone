@@ -7,13 +7,40 @@ import 'rxjs/add/operator/toPromise';
 import { Article } from './article';
 import { environment } from '../environments/environment';
 
+/**
+ * [].sort(compare(a,b))
+ * return value
+ *  0 == they are equal
+ *  1 == a before b
+ *  -1 == b before a
+ */
+interface ArticleSortFn
+{
+  (a: Article, b: Article): number;
+}
+
+interface ArticleSortOrderFn
+{
+  (direction: number): ArticleSortFn;
+}
+
+const sortByTime: ArticleSortOrderFn = 
+  (direction: number) => (a: Article, b: Article) =>
+  {
+    return direction * (b.publishedAt.getTime() - a.publishedAt.getTime());
+  };
+
+const sortFn = {
+  'Time': sortByTime
+};
+
 @Injectable()
 export class ArticleService 
 {
   private _articles: BehaviorSubject<Article[]> = new BehaviorSubject<Article[]>([]);
 
   private _sortByDirectionSubject: BehaviorSubject<number> = new BehaviorSubject<number>(1);
-  private _sortByFilterSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  private _sortByFilterSubject: BehaviorSubject<ArticleSortOrderFn> = new BehaviorSubject<ArticleSortOrderFn>(sortByTime);
 
   public articles: Observable<Article[]> = this._articles.asObservable();
   public orderedArticles: Observable<Article[]>;
@@ -25,7 +52,8 @@ export class ArticleService
     direction: number
   ): void
   {
-
+    this._sortByDirectionSubject.next(direction);
+    this._sortByFilterSubject.next(sortFn[filter]);
   }
   public getArticles(): void 
   {
