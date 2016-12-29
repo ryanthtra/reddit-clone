@@ -30,8 +30,15 @@ const sortByTime: ArticleSortOrderFn =
     return direction * (b.publishedAt.getTime() - a.publishedAt.getTime());
   };
 
+const sortByVotes: ArticleSortOrderFn = 
+  (direction: number) => (a: Article, b: Article) =>
+  {
+    return direction * (b.votes - a.votes);
+  };
+
 const sortFn = {
-  'Time': sortByTime
+  'Time': sortByTime,
+  'Votes': sortByVotes
 };
 
 @Injectable()
@@ -40,12 +47,27 @@ export class ArticleService
   private _articles: BehaviorSubject<Article[]> = new BehaviorSubject<Article[]>([]);
 
   private _sortByDirectionSubject: BehaviorSubject<number> = new BehaviorSubject<number>(1);
+
   private _sortByFilterSubject: BehaviorSubject<ArticleSortOrderFn> = new BehaviorSubject<ArticleSortOrderFn>(sortByTime);
 
   public articles: Observable<Article[]> = this._articles.asObservable();
+  
   public orderedArticles: Observable<Article[]>;
 
-  constructor(private http: Http) { }
+  constructor(private http: Http) 
+  { 
+    this.orderedArticles = Observable.combineLatest(
+      this._articles,
+      this._sortByFilterSubject,
+      this._sortByDirectionSubject
+    )
+    .map(([
+      articles, sorter, direction
+    ]) => 
+    {
+      return articles.sort(sorter(direction));
+    });
+  }
 
   public sortBy(
     filter: string,
