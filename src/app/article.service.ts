@@ -50,6 +50,8 @@ export class ArticleService
 
   private _sortByFilterSubject: BehaviorSubject<ArticleSortOrderFn> = new BehaviorSubject<ArticleSortOrderFn>(sortByTime);
 
+  private _filterbySubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
+
   public articles: Observable<Article[]> = this._articles.asObservable();
   
   public orderedArticles: Observable<Article[]>;
@@ -59,13 +61,18 @@ export class ArticleService
     this.orderedArticles = Observable.combineLatest(
       this._articles,
       this._sortByFilterSubject,
-      this._sortByDirectionSubject
+      this._sortByDirectionSubject,
+      this._filterbySubject
     )
     .map(([
-      articles, sorter, direction
+      articles, sorter, direction, filterStr
     ]) => 
     {
-      return articles.sort(sorter(direction));
+      const re = new RegExp(filterStr, 'gi');
+      return articles.filter(function(article) 
+      {
+        return (re.exec(article.title) || re.exec(article.description));
+      }).sort(sorter(direction));
     });
   }
 
@@ -77,6 +84,12 @@ export class ArticleService
     this._sortByDirectionSubject.next(direction);
     this._sortByFilterSubject.next(sortFn[filter]);
   }
+
+  public filterBy(filter: string)
+  {
+    this._filterbySubject.next(filter);
+  }
+
   public getArticles(): void 
   {
     // Make the http reuest -> Observable
