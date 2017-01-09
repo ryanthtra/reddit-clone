@@ -1,20 +1,23 @@
 import { Component, OnInit } from '@angular/core';
+import { ArticleService } from '../article.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
-  // templateUrl: './sidebar.component.html',
-  template: `
-    <div id="sidebar">
-      Sidebar will go here
-    </div>
-  `,
+  templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
+  private sources: Observable<any>;
 
-  constructor() { }
+  constructor(private articleService: ArticleService) 
+  { 
+    this.sources = articleService.sources;
+  }
 
-  ngOnInit() {
+  ngOnInit() 
+  {
+    this.articleService.getSources();
   }
 
 }
