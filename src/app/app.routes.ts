@@ -1,5 +1,5 @@
 import { Routes, RouterModule } from '@angular/router';
-import { ModuleWithProviders } from '@angular/core';
+import { ModuleWithProviders } from '@angular/core';  // Added for the Windows version of Angular2
 
 import { AboutComponent } from './about/about.component';
 import { ArticleListComponent } from './article-list/article-list.component';
