@@ -1,6 +1,7 @@
 import { 
   Component,
-  Input 
+  Input,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { Article } from './article';
@@ -13,5 +14,6 @@ import { Article } from './article';
   selector: 'app-root',
   templateUrl: './app.component.html',   
   styleUrls: ['./app.component.css']
+  , encapsulation: ViewEncapsulation.Emulated
 })
 export class AppComponent {}
